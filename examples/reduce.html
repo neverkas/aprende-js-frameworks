@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+         const numeros = [1,2,3,4];
+         let reducer = (previousValue, currentValue) => previousValue + currentValue;
+
+         reducer = function (previousValue, currentValue) {
+             return previousValue + currentValue;
+         }
+
+         // usa el primer elemento como semilla
+         //
+         // 1) 1+2=3
+         // 2) 3+3=6
+         // 3) 6+4=10
+         // 4) 10 <-- el reduce retorna un valor
+         console.log(numeros.reduce(reducer));
+
+         // usa al "5" como elemento semilla
+         //
+         // 1) 5+1=6
+         // 2) 6+2=8
+         // 3) 8+3=11
+         // 4) 11+4=15
+         // 5) 15 <- el reduce retorna un valor
+         console.log(numeros.reduce(reducer, 5));
+
+         console.log('---------------------------------------');
+         // - el tercer y cuarto parámetro son opcionales
+         // - opera los primeros dos parámetros (a menos que se indique el tercer parámetro)
+         // - si se agrega el tercer parámetro, opera el tercero con el primero
+         let resultado = numeros.reduce(function(previousValue, currentValue, currentIndex, array){
+             return previousValue + currentValue;
+         });
+         console.log(resultado);
+
+         resultado = numeros.reduce(
+             function(previousValue, currentValue, currentIndex, array){
+                 return previousValue + currentValue;
+             },
+             5 // valor semilla, 5 + primerValorDelArray
+         );
+         console.log(resultado);
+
+         resultado = numeros.reduce(
+             (previousValue, currentValue, currentIndex, array) => previousValue + currentValue,
+             5);
+         console.log(resultado);
+
+         // ----------------------------------------------------------------------------------
+
+         let personas = [
+             {nombre: 'pepe', sueldo:500},
+             {nombre: 'pedro', sueldo:600},
+             {nombre: 'pepito', sueldo:700}
+         ];
+
+         const sueldoBase = 0;
+         let sueldos = personas.reduce(
+             function(previousValue, currentValue){
+                 console.log(previousValue + '+ '+ currentValue.sueldo);
+                 return previousValue+ currentValue.sueldo;
+             },
+             sueldoBase // valor semilla, 0 + primerElementoDelArray.sueldo
+         );
+         console.log(sueldos);
+
+         // si usamos una función lambda, nos evitamos hacer el retorno y las llaves { } y el ;
+         sueldos = personas.reduce(
+             (previousValue, currentValue) => previousValue+ currentValue.sueldo
+         , sueldoBase);
+         console.log(sueldos);
+
+         // ----------------------------------------------------------------------------------
+
+         let empleados = [
+             {nombre:'carlos', sector:'ventas'}, {nombre:'pedro', sector:'ventas'}, {nombre:'pepito', sector:'ventas'},
+             {nombre:'maria', sector:'compras'}, {nombre:'meli', sector:'compras'}
+         ];
+
+         // flatten an array of arrays
+         let listaEmpleados = empleados.reduce(
+             function(previousElement, currentElement){
+                 return previousElement.concat(currentElement.nombre);
+             },
+             [] // [] es la semilla, [].concat(primerElementoDelArreglo)
+         );
+         console.log(listaEmpleados);
+
+         listaEmpleados = empleados.reduce(
+             (previousElement, currentElement) => previousElement.concat(currentElement.nombre),
+             [] // [] es la semilla, [].concat(primerElementoDelArreglo)
+         );
+         console.log(listaEmpleados);
+        </script>
+
+        <script type="text/javascript">
+         // haremos como un diccionario (clave, valor)
+         // donde cada elemento del array será la clave
+         // y el valor será el numero de repeticiones en el arreglo
+         let usuariosIngresos = ['pedro', 'garcia', 'perez', 'pedro', 'garcia'];
+         let usuariosCantidadIngresos = usuariosIngresos.reduce(
+             function(usuarios, nombre){
+                 // - usa a "nombre" como clave, para buscar en el diccionario
+                 // similar a buscar por el índice de un arreglo, donde el índice es un string
+                 // - incrementamos el valor de la clave asociada, hace diccionario[clave]=diccionario[clave]+1
+                 if(nombre in usuarios){
+                     usuarios[nombre]++;
+                 }
+                 // - en la primera iteración hará ('pedro' in {}) ?
+                 // como la condición es false, pasará por este else y lo agregará al diccionario quedando {'pedro':1}
+                 else{
+                     usuarios[nombre] = 1;
+                 }
+
+                 // es necesario retornar los usuarios, porque se vuelve a ejecutar la función anónima
+                 // y reutiliza esto como "previousValue"
+                 return usuarios;
+             },
+             {} // el elemento semilla será un object vacío {}, y se agregará (clave, valor)
+         );
+
+         console.log(usuariosCantidadIngresos);
+        </script>
+
+        <script type="text/javascript">
+         let lectores = [
+             {nombre: 'pepito', edad: 18, librosLeidos: ['un dragon perdido', 'blanca nieves']},
+             {nombre: 'samuel', edad: 16, librosLeidos: ['el argentino', 'un chino perdido']},
+             {nombre: 'fede', edad: 19, librosLeidos: ['los patriarcas']},
+             {nombre: 'cindi', edad: 21, librosLeidos: ['los mejores años']}
+         ];
+
+         let libros = lectores.reduce(
+             function(previousElement, currentElement){
+                 // Usamos el "spread operator" que es ... para crear un arreglo
+                 //
+                 // En la primera ejecución de la función anónima
+                 // 1. el previousElement inicialmente es [] una lista vacía,
+                 // agarra todos los elementos que tiene, que es ninguno
+                 // 2. el currentElement es el primer object {nombre:'pepito', blabla}
+                 //
+                 // Es necesario el return, porque cuando se vuelve a ejecutar la función anónima
+                 // ésta recibe como previousElement el retorno,
+                 // y currentElement el segundo object {nombre:'samuel', blabla}
+                 return [...previousElement, ...currentElement.librosLeidos];
+
+                 // otra manera, hubiese sido sólo concatenando
+                 // return previousElement.concat(currentElement.librosLeidos);
+             },
+             []
+         );
+
+         console.log(libros);
+        </script>
+        <script type="text/javascript">
+         /* console.clear(); */
+
+         function promesa1(x){
+             return new Promise(
+                 function(resolve, reject){
+                     /* resolve(x * 2); */
+                     /* reject('Ups.! Error?'); */
+                     new Error('shit!');
+                 }
+             );
+         }
+
+         function promesa2(x){
+             return new Promise(
+                 (resolve, reject) => resolve(x * 2)
+             );
+         }
+
+         // Alternativa, infiere que debe imprimir el valor de la promesa
+         // promesa(4).then(console.log);
+
+         promesa1(4)
+             .then(
+                 function(value){
+                     console.log(value);
+                 }
+             )
+             .catch(
+                 function(err){
+                     console.error(err);
+                 }
+             );
+
+         promesa2(5)
+             .then(value => console.log(value))
+             .catch(err => console.error(err));
+
+         // ---------------------------------------------------------
+
+         function p1(x){
+             return new Promise(
+                 // - al usar resolve() indicamos que la promesa se completó con éxito
+                 // - si hubieramos usado reject() diríamos que la promesa fue rechazada
+                 // y al invocar p1() aparte del then(f) deberiamos capturar el error con catch(f)
+                 (resolve, reject) => resolve(x + 1) // función lambda
+             );
+         }
+
+         function p2(x){
+             return new Promise(
+                 (resolve, reject) => resolve(x + 2) // función lambda
+             );
+         }
+
+         function p3(x){
+             return new Promise(
+                 (resolve, reject) => resolve(x + 10) // función lambda
+             );
+         }
+
+         function p4(x){
+             // Ojo..! esta función p4() no retorna una Promise como p1, p2, p3
+             // pero como usamos el método then() éste ya retorna una promesa
+             // con x+1 como resultado
+             return x + 1;
+         }
+
+         console.log(p1(0));
+
+         p1(0) // p1 retorna una promesa que tiene como resultado de 0+1
+         // then() consume el resultado de la promesa p1, se lo pasa por parámetro a p2,
+         // y retorna otra promesa con el resultado que devuelve la función lambda 1+2
+             .then(p2)
+             .then(p3) // then() consume el resultado de la promesa p2 anterior y retorna otra promesa con resultado 3+10
+             .then(p4) // then() consume el resultado de la promesa p3 anterior y retorna otra promesa con resultado 10+1
+             .then(console.log)
+             .catch(e => console.log(e));
+        </script>
+
+        <script type="text/javascript">
+         const double = x => x + x
+         const triple = x => 3 * x
+
+         let pipe = function (...functions){
+             return function (input){
+                 return functions.reduce(
+                     (acc, fn) => fn(acc), input
+                 );
+             }
+         }
+
+         // - usamos 3 funciones lambda + spread operator + reduce()
+         pipe = (...functions) =>
+             // input es el parámetro de cada función
+             input =>
+                 // éste el cuerpo de la 2da función lambda,
+                 // retorna un valor que devuelve reduce()
+                 functions.reduce(
+                     (acc, fn) => fn(acc),
+                     input
+                 )
+
+         const multiply6 = pipe(double, triple)
+         const multiply9 = pipe(triple, triple)
+
+         console.log(multiply6(6))   // 36
+         console.log(multiply9(9))   // 81
+        </script>
+    </head>
+    <body>
+        ba
+    </body>
+</html>

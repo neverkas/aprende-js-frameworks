@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+         // declaramos una función lamba para recibir los dos parámetros (podría haber sido anónima ó nombrada)
+         const validarUsuario = (username, password) => {
+             // retornamos una promesa, porque prometemos que vamos a retornar un valor, pero.. deben esperar :(
+             // simulamos que procesamos/operamos los datos y luego devolvemos el resultado en la promesa
+             return new Promise(
+                 (resolve, reject) => {
+                     console.log('Validando usuario contra el sistema...');
+                     // simulamos que el usuario existe en el sistema :)
+                     const usuarioValido = true;
+
+                     setTimeout(() =>{
+                         if(usuarioValido){
+                             resolve('El usuario es válido'); // este mensaje se puede capturar con then(callbackFn)
+                         }else{
+                             reject('El usuario no existe'); // este error se captura con catch(callbackFn) ó then(null, fn)
+                         }
+                     }, 1000);  // la función lambda que le pasamos por parámetro al seTimeout se ejecutará en 1 segundo
+                 }
+             );
+         }
+
+         const validarPassword = (password) => {
+             // retornamos una promesa, porque prometemos que vamos a retornar un valor, pero.. deben esperar :(
+             // simulamos que procesamos/operamos los datos y luego devolvemos el resultado en la promesa
+             return new Promise(
+                 (resolve, reject) => {
+                     console.log('Validando la seguridad de la clave...');
+
+                     // simulamos que la clave es válida, le corresponde al usuario :)
+                     const claveCorrecta = true;
+
+                     setTimeout(() =>{
+                         if(claveCorrecta){
+                             resolve('La clave ingresada es válida'); // este mensaje se puede capturar con then(callbackFn)
+                         }else{
+                             reject('La clave no es correcta'); // este error se captura con catch(callbackFn) ó then(null, fn)
+                         }
+                     }, 2000); // la función lambda que le pasamos por parámetro al seTimeout se ejecutará en 2 segundos
+                 }
+             );
+         }
+
+         const generarToken = (password) => {
+             return new Promise(
+                 (resolve, reject) => {
+                     console.log('Generando token de acceso...');
+
+                     setTimeout( () => {
+                         resolve('Ha ingresado al sistema con éxito! :)');
+                     }, 1000);
+                 }
+             );
+         }
+
+         async function loginMejorado(username, password){
+             // con el 'await' la función asincrónica
+             // se queda esperando a la promesa que se complete con éxito ó que falle
+             const usuarioOK = await validarUsuario(username, password);
+             console.log(usuarioOK); // imprimimos el resultado de la promesa
+             const passwordOK = await validarPassword(password);
+             console.log(passwordOK);
+             const tokenOK = await generarToken(password);
+             console.log(tokenOK);
+         }
+
+         // loginMejorado('pepito', '123123');
+
+
+         const validarPassword2 = (password) => {
+             // retornamos una promesa, porque prometemos que vamos a retornar un valor, pero.. deben esperar :(
+             // simulamos que procesamos/operamos los datos y luego devolvemos el resultado en la promesa
+             return new Promise(
+                 (resolve, reject) => {
+                     console.log('Validando la seguridad de la clave...');
+
+                     // simulamos que la clave es válida, le corresponde al usuario :)
+                     const claveCorrecta = false;
+
+                     setTimeout(() =>{
+                         if(claveCorrecta){
+                             resolve('La clave ingresada es válida'); // este mensaje se puede capturar con then(callbackFn)
+                         }else{
+                             reject('La clave no es correcta'); // este error se captura con catch(callbackFn) ó then(null, fn)
+                         }
+                     }, 2000); // la función lambda que le pasamos por parámetro al seTimeout se ejecutará en 2 segundos
+                 }
+             );
+         }
+
+         async function login2(username, password){
+             try{
+             // con el 'await' la función asincrónica
+             // se queda esperando a la promesa que se complete con éxito ó que falle
+             const passwordOK = await validarPassword2(password);
+                 console.log(passwordOK);
+             } catch(err){
+                 console.log(err);
+             }
+         }
+
+         // login2('pepito', '123123');
+        </script>
+
+        <script type="text/javascript">
+         // - ejecutamos todas las tareas asincrónicas,
+         // - si todas se completaron con éxito, se ejecutará la callback function dentro del then()
+         // - si alguna de las peticiones falla, se capturará el error con el catch()
+         // y ejecutará la función pasada por parámetro
+         const traerFotos = async function(){
+             const fotoAuto = fetch('/assets/foto.jpeg');
+             const wallpaperLinux = fetch('/assets/foto.jpeg');
+             const thumbnailUser = fetch('/assets/foto.jpeg');
+
+             const promesa = await Promise.all([fotoAuto, wallpaperLinux, thumbnailUser])
+                    .then(resultArray => console.log(resultArray) )
+                                          .catch(err => console.log(err));
+
+             return promesa;
+         }
+
+         const test = traerFotos();
+         console.log(test);
+        </script>
+    </head>
+    <body>
+        a
+    </body>
+</html>

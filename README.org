@@ -1,0 +1,77 @@
+* Servidor HTTP
+** Eleventy
+*** Comandos
+    #+BEGIN_SRC shell
+      # instalar
+      npm install --save-dev @11ty/eleventy
+    
+      # compila o transpila, no se (?) a _site
+      npx @11ty/eleventy
+    
+      # iniciar servidor
+      npx @11ty/eleventy --serve
+    #+END_SRC
+*** Referencias
+    1. https://www.11ty.dev/docs/getting-started/
+* Promise
+** Conceptos
+   - Una *promesa* es un objeto
+   - Representa el estado (exitoso/fallido) de una *operación asincrónica*
+** Referencias
+*** Referencias Oficiales
+    1. [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises][Using promises (developer.mozilla.org)]]
+    2. [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise][Promises (developer.mozilla.org)]]
+* Funciones Asincrónicas
+** Conceptos
+   - La expresión ~await~ evita la necesidad de configurar cadenas de promesas
+   - Una *función asincrónica* se define ~async function nombre(){ ... }~
+
+   #+BEGIN_QUOTE
+   Async functions always return a promise.
+   If the return value of an async function is not explicitly a promise,
+   it will be implicitly wrapped in a promise.
+
+   Even though the return value of an async function behaves as if it's wrapped
+   in a Promise.resolve, they are not equivalent.
+   An async function will return a different reference,
+   whereas Promise.resolve returns the same reference if the given value is a promise.
+   #+END_QUOTE
+** Ejemplo
+   #+BEGIN_SRC javascript
+     async function foo() {
+         return 1
+     }
+     
+     // es similar a la función asincrónica anterior
+     function foo() {
+         return Promise.resolve(1)
+     }
+   #+END_SRC
+** Referencias
+*** Oficiales
+   1. [[https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await][Async and await (developer.mozilla.org)]]
+   2. [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function][Async function (developer.mozilla.org)]]
+*** Issues
+    1. [[https://forum.freecodecamp.org/t/is-it-possible-to-use-typescript-inside-html-file/433922/3][Typescript inside html file (freecodecamp.org)]]
+* Promesas Vs Funciones Asincrónicas
+** Conceptos
+   - La *palabra clave* ~async~ delante de una *función*, la convierte en una *función asincrónica*
+   - Agregar la palabra clave ~async~ a una función, implica que ésta retornará una *promesa* en vez de un *valor*
+   - Una *función asincrónica* puede ser demorada con la *palabra clave* ~await~
+   - Invocar una *función asincrónica* retorna una *promesa*
+   - Con ~then()~ nos permite *consumir el valor de retorno de una promesa que se completó con éxito*
+** Ejemplos
+   #+BEGIN_SRC javascript
+     
+   #+END_SRC
+* Iterators && Generators
+** Conceptos
+** Referencias
+*** Oficiales
+    1. [[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators][Iteratos and Generators (developer.mozilla.org)]]
+* Babel
+** Conceptos
+** Referencias
+   1. [[https://babeljs.io/setup][Setup (babeljs.io)]]
+   2. [[https://www.thegeekstuff.com/2016/12/babel-for-javascript/][How to use BAbel Javascript Compiler as Transpier (thegeekstuff.com)]]
+   3. [[https://calebporzio.com/using-babel-without-the-build-inline-js-ftw][Using BAbel without the build (calebporzio.com)]]

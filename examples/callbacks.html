@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+         /* function login(username, password, callbackFn){
+          *     console.log('Usuario haciendo login..');
+
+          *     callbackFn(username, password, validarPassword);
+          * }
+
+          * function validarUsuario(username, password, callbackFn){
+          *     console.log('Validando el usuario contra el sistema..');
+
+          *     setTimeout(() =>{
+          *         callbackFn(password, generarToken);
+          *     }, 1000); // luego de 2 segundos ejecutará la función lambda
+          * }
+
+          * function validarPassword(password, callbackFn){
+          *     console.log('Validando si la clave es segura..');
+
+          *     setTimeout( () =>{
+          *         callbackFn(password);
+          *     }, 1000);
+          * }
+
+          * function generarToken(password){
+          *     console.log('Generando token de acceso');
+
+          *     setTimeout( () =>{
+          *         console.log('Has ingresado al sistema! :)');
+          *     }, 1000);
+          * } */
+
+         /* login('carlitos', '123123', validarUsuario); */
+        </script>
+        <script type="text/javascript">
+         const login = function (data){
+             console.log('Usuario haciendo login..');
+
+             const options = data.options;
+             return options.callbackFn(data.username, data.password);
+         }
+
+         const validarPassword = function (password){
+             console.log('Validando si la clave es segura..');
+
+             if(password == ''){
+                 return {
+                     valid: false,
+                     message: 'Debe completar la clave'
+                 };
+             }
+
+             if(password.length < 4){
+                 return {
+                     valid: false,
+                     message: 'La clave debe tener al menos 4 caracteres'
+                 };
+             }
+
+             return {valid: true};
+         }
+
+         let userLogin = {username: 'carlitos', password: '123123'};
+
+         let statusLogin = login({
+             ...userLogin, // nos traemos las propiedades dell object userLogin
+             options:{
+                 callbackFn: validarPassword
+             }
+         });
+
+         console.log(statusLogin)
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

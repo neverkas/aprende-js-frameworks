@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+         let promesa = new Promise();
+
+         function promesaExitosa(x){
+             return new Promise(
+                 function(resolve, reject){
+                     setTimeout(
+                         () => resolve('Wiii.!' + x * 2)  // puede capturarse el valor con .then()
+                         , 3000  // se ejecutará la función lambda luego de 2 segundos
+                     );
+                 }
+             );
+         }
+
+         // alternativa a la anterior, con sólo funciones lambda
+         function otraPromesaExitosa(x){
+             return new Promise(
+                 (resolve, reject) =>
+                     setTimeout( () => resolve('Wiii.!' + x * 2), 3000)
+             );
+         }
+
+         function promesaQueFallara(x){
+             return new Promise(
+                 function(resolve, reject){
+                     setTimeout(
+                         () => reject(new Error('Ups..!')), // puede capturarse el error con .catch()
+                         2000 // se ejecutará la función lambda luego de 2 segundos
+                     );
+                 }
+             );
+         }
+
+         promesaExitosa(10)
+             .then( value => console.log(value) )
+             .catch(err => console.log(err) );
+
+         otraPromesaExitosa(5)
+             .then( value => console.log(value) )
+             .catch(err => console.log(err) );
+
+         promesaQueFallara(10)
+             .then( value => console.log(value) )
+             .catch(err => console.log(err) );
+
+
+         // Alternativa, infiere que debe imprimir el valor de la promesa
+         // promesa(4).then(console.log);
+
+
+         // ---------------------------------------------------------
+
+         /* function p1(x){
+          *     return new Promise(
+          *         // - al usar resolve() indicamos que la promesa se completó con éxito
+          *         // - si hubieramos usado reject() diríamos que la promesa fue rechazada
+          *         // y al invocar p1() aparte del then(f) deberiamos capturar el error con catch(f)
+          *         (resolve, reject) => resolve(x + 1) // función lambda
+          *     );
+          * }
+
+          * function p2(x){
+          *     return new Promise(
+          *         (resolve, reject) => resolve(x + 2) // función lambda
+          *     );
+          * }
+
+          * function p3(x){
+          *     return new Promise(
+          *         (resolve, reject) => resolve(x + 10) // función lambda
+          *     );
+          * }
+
+          * function p4(x){
+          *     // Ojo..! esta función p4() no retorna una Promise como p1, p2, p3
+          *     // pero como usamos el método then() éste ya retorna una promesa
+          *     // con x+1 como resultado
+          *     return x + 1;
+          * }
+
+          * console.log(p1(0));
+
+          * p1(0) // p1 retorna una promesa que tiene como resultado de 0+1
+          * // then() consume el resultado de la promesa p1, se lo pasa por parámetro a p2,
+          * // y retorna otra promesa con el resultado que devuelve la función lambda 1+2
+          *     .then(p2)
+          *     .then(p3) // then() consume el resultado de la promesa p2 anterior y retorna otra promesa con resultado 3+10
+          *     .then(p4) // then() consume el resultado de la promesa p3 anterior y retorna otra promesa con resultado 10+1
+          *     .then(console.log)
+          *     .catch(e => console.log(e)); */
+        </script>
+    </head>
+    <body>
+        a
+    </body>
+</html>

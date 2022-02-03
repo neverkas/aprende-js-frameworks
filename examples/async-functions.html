@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+         function saludarConPromesa(mensaje){
+             return new Promise(done =>{
+                 setTimeout(() =>{
+                     console.log('ejecutando promesa');
+                     done(mensaje); // le pasamos un parámetro a la función anónima
+                 }, 2000); // 2 segundos
+             });
+         }
+
+         // ALTERNATIVA #1
+         const crearSaludo = async function(mensaje){
+             // esta promesa tardará 2 segundos en devolver un resultado
+             let palabra = await saludarConPromesa('we');
+             // esta otra promesa tardará 2 segundos en devolver un resultado
+             let otraPalabra = await saludarConPromesa('bon');
+
+             // - Se retiene el retorno de la función, hasta que "palabra" y "otraPalabra"
+             // tengan asignado un resultado
+             //
+             // - Los "await" retienen la ejecución de la función asincrónica,
+             // cuando se cumpla la promesa invocada, esta devolverá un resultado,
+             // en ese momento ese resultado se asigna como valor a las variables "palabra" y "otraPalabra"
+             //
+             // - Los dos "await" retuvieron la sentencia de retorno de la función asincrónica,
+             // cuando ya no tienen nada que esperar, sigue el flujo de ejecución de la función
+             return mensaje + palabra + otraPalabra;
+         }
+
+         /* crearSaludo('hola! ').then(done => {
+          *     console.log(done);
+          * }); */
+
+         // ----------------------------------------------------------------
+         // ALTERNATIVA #2
+
+         /* (async function(mensaje){
+          *     let palabra = saludarConPromesa('chu'); // demorará 2 segundos
+          *     let otraPalabra = saludarConPromesa('chuuu'); // demorará otros 2 segundos
+          *     return mensaje + await palabra + await otraPalabra; // en t=4 se ejecuta la sentencia
+          * })('chau').then(done => {
+          *     console.log(done);
+          * }); */
+        </script>
+        <script type="text/javascript">
+         function resolveAfter2Seconds() {
+             console.log("starting slow promise")
+             return new Promise(resolve => {
+                 setTimeout(function() {
+                     resolve("slow")
+                     console.log("slow promise is done")
+                 }, 2000)
+             })
+         }
+
+         function resolveAfter1Second() {
+             console.log("starting fast promise")
+             return new Promise(resolve => {
+                 setTimeout(function() {
+                     resolve("fast")
+                     console.log("fast promise is done")
+                 }, 1000)
+             })
+         }
+
+         async function sequentialStart() {
+             console.log('==SEQUENTIAL START==')
+
+             // 1. Comienza el flujo de ejecución de la función asincrónica
+             const slow = await resolveAfter2Seconds()
+             console.log(slow) // 2. Se ejecuta 2 segundos después del paso (1), t=2
+
+             const fast = await resolveAfter1Second()
+             console.log(fast) // 3. Se ejecuta 1 segundo después que terminó la anterior, t=3
+         }
+
+         sequentialStart();
+
+         console.log('as');
+        </script>
+    </head>
+    <body>
+        weee
+    </body>
+</html>

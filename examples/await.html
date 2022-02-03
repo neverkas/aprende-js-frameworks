@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div></div>
+    </body>
+
+    <script type="text/javascript">
+     var div = document.querySelector('div');
+
+     let texto1 = function(){
+         fetch('/assets/texto.txt')
+             .then(response => response.text() )
+             .then(text => div.innerHTML = text );
+     }
+
+     texto1();
+
+     // ----------------------------------------------------------------
+
+     let texto2 = async (url) => {
+         const response  = await fetch(url);
+
+         return response;
+     }
+
+     texto2('/assets/texto.txt')
+         .then(response => response.text())
+         .then(text =>  div.innerHTML = text);
+    </script>
+</html>

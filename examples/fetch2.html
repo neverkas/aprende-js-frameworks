@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript">
+     function fetchText1(){
+         const response = fetch('/assets/texto.txt');
+         /* const texto = response.text(); */
+
+         return response;
+     }
+
+     async function fetchText2(){
+         // - Necesitamos agregar la keyword 'await' a la función asíncrónica fetch()
+         // - El 'await fetch()' retorna un object Response, que tiene métodos para manejar formatos de datos (text, json, imagenes, ..)
+         const response = await fetch('/assets/texto.txt');
+
+         // necesitamos usar la keyword 'await' porque response.text() retorna una promesa
+         const texto = await response.text();
+
+         return texto;
+     }
+
+     /* fetchText1().then(texto => { console.log(texto); }); */
+     fetchText2().then(texto => { console.log(texto); });
+
+     // - ejecutamos todas las tareas asincrónicas,
+     // - si todas se completaron con éxito, se ejecutará la callback function dentro del then()
+     // - si alguna de las peticiones falla, se capturará el error con el catch()
+     // y ejecutará la función pasada por parámetro
+     /* Promise.all([foto1, foto2, foto3])
+      *        .then(resultArray => console.log(resultArray) )
+      *        .catch(err => console.log(err)); */
+    </script>
+</head>
+<body>
+    a
+</body>
+</html>

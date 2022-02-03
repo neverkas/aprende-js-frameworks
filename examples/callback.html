@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+         function saludar(nombre){
+             console.log('Hola ' + nombre);
+         }
+
+         function preguntarNombre(callback){
+             var nombre = prompt('escriba su nombre');
+
+             // - esta es una "synchronous callback" porque se ejecuta en el momento
+             // que es invocada
+             callback(nombre);
+         }
+
+         // - le pasamos por parámetro la función "saludar"
+         // - la función "saludar" actúa como una "callback function"
+         // preguntarNombre(saludar);
+        </script>
+
+        <script type="text/javascript">
+         const myImage = document.querySelector('img');
+
+         let myRequest = new Request('img/foto.jpeg');
+
+         fetch(myRequest)
+             .then(function(response) {
+                 if (!response.ok) {
+                     throw new Error(`HTTP error! status: ${response.status}`);
+                 }
+                 return response.blob();
+             })
+             .then(function(response) {
+                 let objectURL = URL.createObjectURL(response);
+                 myImage.src = objectURL;
+             });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

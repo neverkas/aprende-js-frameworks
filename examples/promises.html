@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+         function saludarEn(segundos){
+             setTimeout(() =>{
+                 console.log("hola");
+             }, segundos*1000);
+         }
+
+         saludarEn(2);
+
+         // - Tanto la promesa como el setTimeout soportan funciones lambda/anónimas
+         // - Al retornar una promesa...
+         function saludarConPromesaEn(segundos){
+             return new Promise(done =>{
+                 console.log('empieza la promesa');
+                 setTimeout(() =>{
+                     done('holaaaa'); // le pasamos un parámetro a la función anónima
+                 }, segundos*1000);
+             });
+         }
+
+         // - el "await" sólo funciona en "async function" (funciones asincrónicas)
+         // - "await" suspende la ejecución de una función,
+         // hasta la Promise retorne un estado fulfilled ó rejected
+         async function llamadaAsincronica(){
+             console.log('invocando función asincrónica..');
+             const resultado = await saludarConPromesaEn(2);
+
+             console.log(resultado);
+         }
+
+         llamadaAsincronica();
+        </script>
+        <script type="text/javascript">
+         const promise1 = new Promise((resolve, reject) => {
+             setTimeout(() => {
+                 //resolve('foo');
+                 reject('OCURRIO UN ERROR?');
+             }, 5000); // se ejecuta luego de 5 segundos
+         });
+
+         // si la promesa tuvo éxito, se encadenan el retorno de cada función anónima
+         promise1
+         // encadenamos el resultado de la promesa 'foo'+'and bar' y retornamos
+             .then(value => { return value + ' and bar, '; })
+         // encadenamos el resultado anterior con 'and bar again' y retornamos
+             .then(value => { return value + ' and bar again, '; })
+         // imprimimos por consola el retorno
+             .then(value => { console.log(value) })
+             .catch(err => { console.log(err) });
+
+         //-------------------------------------------------------------------------
+
+         const promiseA = new Promise( (resolutionFunc,rejectionFunc) => {
+             resolutionFunc(777);
+         });
+         // luego que se ejecuta la promesa y esta tiene éxito,
+         // capturamos su resultado en la función lambda/anónima y lo agregamos al console.log()
+         promiseA.then( (val) => console.log("asynchronous logging has val:", val) );
+         console.log("immediate logging");
+
+         // el orden en que se imprimen es
+         // 1) immediate logging
+         // 2) asynchronous logging has val
+        </script>
+    </head>
+    <body>
+        <h1>ooo</h1>
+    </body>
+</html>

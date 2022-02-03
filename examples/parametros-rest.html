@@ -1,0 +1,47 @@
+<!DOCTYPE hmtl>
+<html>
+    <head>
+        <script type="text/javascript">
+         function multiplicarPorElPrimero(primero, ...resto){
+             return resto.map(x => primero * x);
+         }
+
+         var arr = multiplicarPorElPrimero(2,3,4,5);
+         console.log(arr);
+
+         var personas = [
+             {nombre: 'carlos', edad: 17},
+             {nombre: 'pedro', edad: 16},
+             {nombre: 'samuel', edad: 14}
+         ];
+
+         var nombres = personas.map(function(p){ return p.nombre; });
+         console.log(nombres);
+
+         var edades = personas.map(p => p.edad);
+         console.log(edades);
+
+         function Persona(){
+             var self = this;
+             self.edad = 0;
+             console.log(self.edad);
+
+             setTimeout(function (){
+                 // - una función anónima define su propio "this" (contexto)
+                 // - pero podemos referenciar al this del constructor en una variable (Ej. self)
+                 self.edad++;
+                 console.log(self.edad);
+             }, 1000);
+
+             setTimeout(() =>{
+                 this.edad++;
+                 console.log(this.edad);
+             }, 2000);
+         }
+
+         var persona = new Persona();
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

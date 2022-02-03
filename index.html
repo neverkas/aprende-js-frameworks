@@ -1,0 +1,120 @@
+<html>
+    <head>
+        <!-- <script type="module" src="src/js/alpine.js?v=3"></script> -->
+        <script src="src/js/axios.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine.js"></script>
+        <!-- <link rel="stylesheet" href="/style.css" /> -->
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <style>
+         .hidden{ display:none; }
+        </style>
+        <script>
+         function imageViewer(src='') {
+             return {
+                 imageUrl: src,
+
+                 elegirImagen(event) {
+                     this.fileToDataUrl(event, src => this.imageUrl = src)
+                 },
+
+                 fileToDataUrl(event, callback) {
+                     if (! event.target.files.length) return
+
+                     let file = event.target.files[0];
+                     let reader = new FileReader();
+
+                     reader.readAsDataURL(file);
+                     reader.onload = e => callback(e.target.result);
+                 },
+             }
+         }
+        </script>
+    </head>
+    <body>
+        <!--
+             x-data ->guardamos datos en formato json
+             x-text -> escribimos texto en el contenido de un elemento (Ej. en p, span, ..)
+
+             x-bind -> agrega comportamiento en atributos (Ej. para alternar clases)
+             x-on:evento -> escucha eventos del navegador sobre un elemento (Ej. click)
+
+             x-html -> modifica el inner HTML de un elemento
+
+             x-model -> sincroniza datos (Ej. x-data) con el input de un elemento (Ej. <input type='text'>)
+
+             x-for -> (requiere template) repetir un bloque de html, según un conjunto de datos en formato Json
+        -->
+        <div class="flex flex-col bg-purple-500 bg-opacity-25 p-5">
+            <div class="flex flex-row" x-data="{ open: true, title: 'nombre', description: 'Escriba su nombre' }">
+                <div x-bind:class="!open ? 'hidden' : '' ">
+                    <span x-text="title"></span>
+                    <input :placeholder="description" type="text">
+                </div>
+                <div>
+                    <button
+                        class="mx-2 rounded-lg bg-red-500 hover:bg-white"
+                        x-on:click="open = !open">Ocultar</button>
+                </div>
+            </div>
+
+            <div class="flex flex-row mt-5" x-data="{ open: true, label: 'apellido', description: 'Escriba su apellido' }">
+                <template x-if="open">
+                    <div>
+                        <span x-text="label"></span>
+                        <input :placeholder="description" type="text">
+                    </div>
+                </template>
+                <div>
+                    <button
+                        class="mx-2 rounded-lg bg-red-500 hover:bg-white"
+                        @click="open = !open">Ocultar</button>
+                </div>
+            </div>
+
+            <div x-html="(await axios.get('http://localhost:8080/categorias/')).data"></div>
+
+            <div class="mt-5" x-data="{search: ''}">
+                <input type="text" x-model="search">
+
+                Buscando esta palabra <span x-text="search"></span>...
+            </div>
+        </div>
+
+        <div>
+        <ul x-data="{ posts: [
+                    {id:1, title: 'hola gente'},
+                    {id:2, title: 'hola personas'},
+                    {id:3, title: 'hola monsters'}
+                    ]}">
+            <template x-for="post in posts" :key="post.id">
+                <li x-text="post.title"></li>
+            </template>
+        </ul>
+        </div>
+
+        <div x-data="imageViewer('https://media.istockphoto.com/photos/father-takes-selfie-while-son-holds-a-basketball-on-head-picture-id1168467477?k=20&m=1168467477&s=612x612&w=0&h=gy5AyulmQGU89Lv_WqOtxzXBP59nk6kEaIC0jHETMIs=')">
+            <div class="mb-2">
+                <!-- Show the image -->
+                <template x-if="imageUrl">
+                    <img :src="imageUrl"
+                         class="object-cover rounded border border-gray-200"
+                         style="width: 100px; height: 100px;"
+                    >
+                </template>
+
+                <!-- Show the gray box when image is not available -->
+                <template x-if="!imageUrl">
+                    <div
+                        class="border rounded border-gray-200 bg-gray-100"
+                        style="width: 100px; height: 100px;"
+                    ></div>
+                </template>
+
+                <!-- Image file selector -->
+                <input class="mt-2" type="file" accept="image/*" @change="elegirImagen">
+
+            </div>
+        </div>
+
+    </body>
+</html>
